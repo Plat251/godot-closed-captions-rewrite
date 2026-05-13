@@ -16,10 +16,24 @@ signal new_caption_started(caption: Caption)
 ## forces the first occurance of a name occuring in the stream to always show.
 @export var force_display_names: bool = false
 
+func _validate_property(property: Dictionary) -> void:
+	if property.name == "stream":
+		property.usage |= PROPERTY_USAGE_READ_ONLY
+	
+
 func _set(property: StringName, value: Variant) -> bool:
 	if property == "stream":
 		if value != null and not captioned_stream.audio_stream == value:
 			captioned_stream.audio_stream = value
+			return true
+	if property == "playing":
+		print("set playing!!!")
+		if value and not playing:
+			self.play()
+			self.playing = true
+		elif not value and playing:
+			self.stop()
+			self.playing = false
 	return false
 
 func _ready():
@@ -42,20 +56,26 @@ func _get_configuration_warnings() -> PackedStringArray:
 func play(from_position: float = 0.0):
 	super.play(from_position)
 	self._play(from_position)
+	print("called!!!")
 
+func stop():
+	super.stop()
+	self._stop()
+
+var _captioned_playback: CaptionedPlayback = null
 func _play(from_position: float = 0.0):
 	if captioned_stream == null:
 		push_warning("CaptionedAudioStream of player %s is playing but missing Captions." % name)
 		return
+
+	_captioned_playback = CaptionedPlayback.new(self, captioned_stream, get_stream_playback())
+	CaptionServer.start_playback(_captioned_playback)
 	
-	if captioned_stream.get_displaying_caption(from_position):
-		new_caption_started.emit(captioned_stream.get_displaying_caption(from_position))
-	await get_tree().create_timer(captioned_stream.get_delay(from_position))
-	
-	while captioned_stream.get_queued_caption(get_playback_position()) != null and playing:
-		new_caption_started.emit(captioned_stream.get_displaying_caption(get_playback_position()))
-		await  get_tree().create_timer(captioned_stream.get_delay(get_playback_position()))
-	
+
+func _stop():
+	CaptionServer.stop_playback(_captioned_playback)
+	_captioned_playback = null
+
 func _on_stream_changed(new_stream: AudioStream):
 	stream = new_stream
 

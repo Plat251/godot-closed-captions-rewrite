@@ -16,9 +16,6 @@ enum ConfigurationWarnings {
 		audio_stream = new_stream
 		audio_stream_replaced.emit(new_stream)
 
-## Configure the maximum time captions with an automatic duration will be displayed.
-@export var max_automatic_duration: float = 5.0
-
 signal captions_changed(changed_caption: Caption)
 signal audio_stream_replaced(new_stream: AudioStream)
 

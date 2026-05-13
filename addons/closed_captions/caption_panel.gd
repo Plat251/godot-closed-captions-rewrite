@@ -7,20 +7,12 @@ class_name CaptionsPanel
 		if stream != null:
 			if multi_caption_stream != null:
 				multi_caption_stream.captions_changed.disconnect(update_caption_list)
-				multi_caption_stream.caption_set.disconnect(current_caption_changed)
 			multi_caption_stream = stream
-			multi_caption_stream.select_caption = 0
 			if multi_caption_stream != null:
 				multi_caption_stream.captions_changed.connect(update_caption_list)
-				multi_caption_stream.caption_set.connect(current_caption_changed)
-				current_caption = multi_caption_stream.caption
 				speaker_colors = {}
 				for caption in multi_caption_stream._caption_array:
 					confirm_speaker_name(caption)
-				if is_node_ready():
-					#TODO: remove current caption from this entirely?
-					label.caption = current_caption
-					update_caption_list()
 
 @export var force_update:bool = false:
 	set(nix):
@@ -64,10 +56,11 @@ var current_time: float = 0:
 
 @onready var audio_player: Object:
 	set(player):
-		assert(player is CaptionedAudioStreamPlayer or player is CaptionedAudioStreamPlayer2D or player is AudioStreamPlayer or player == null)
+		assert(player is CaptionedAudioStreamPlayer or player is CaptionedAudioStreamPlayer2D or player is CaptionedAudioStreamPlayer3D or player == null)
 		if not player == null:
 			audio_player = player
 			multi_caption_stream = audio_player.captioned_stream
+			audio_player.new_caption_started.connect(current_caption_changed)
 
 var current_caption:Caption:
 	set(caption):
@@ -76,9 +69,7 @@ var current_caption:Caption:
 		current_caption = caption
 		if current_caption != null:
 			current_caption.changed.connect(update_caption_display)
-		print("gothere")
 		if not audio_player.playing:
-			print("gothere")
 			current_time = caption.delay
 		update_caption_display()
 
@@ -90,7 +81,7 @@ var lock_signals
 func _ready():
 	##FIXME for some reason, this is not allowed
 	#time_scale_selector.value_changed.connect(timeline.select_time_scale)
-	time_selector.value_changed.connect(multi_caption_stream.seek_closest)
+	time_selector.value_changed.connect(multi_caption_stream.get_displaying_caption)
 	time_scale_selector.editable = false
 	
 	name_input.text_set.connect(confirm_speaker_name)
@@ -184,10 +175,9 @@ func update_caption_list(_ignore = null):
 	for caption in multi_caption_stream._caption_array: 
 		var button:= CaptionPanelButton.new(caption)
 		caption_list.add_child(button)
-		button.pressed.connect(multi_caption_stream.set.bind("caption", caption))
+		button.pressed.connect(seek_caption.bind(caption))
 
 func current_caption_changed(caption: Caption):
-	print("updating current caption")
 	current_caption = caption
 
 func update_caption_display():
@@ -263,3 +253,10 @@ func last():
 func next():
 	if not multi_caption_stream.caption == multi_caption_stream._caption_array[-1]:
 		multi_caption_stream.select_caption += 1
+
+func seek_caption(caption: Caption):
+	current_time = caption.delay
+	current_caption = caption
+	
+func seek_time(time: float):
+	current_caption = multi_caption_stream.get_displaying_caption(time)

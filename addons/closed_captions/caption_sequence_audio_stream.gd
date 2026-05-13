@@ -21,17 +21,13 @@ func get_displaying_caption(at_time: float) -> Caption:
 	if at_time < 0 or at_time > _caption_array[-1].delay + _caption_array[-1].duration:
 		return null
 	else:
-		for i in _caption_array.size()-1:
-			if _caption_array[i].duration > 0:
-				if _caption_array[i].delay <= at_time and _caption_array[i].delay + _caption_array[i].duration >= at_time:
-					return _caption_array[i]
+		for i in range(1, _caption_array.size()):
+			if _caption_array[-i].duration > 0:
+				if _caption_array[-i].delay <= at_time and _caption_array[-i].delay + _caption_array[-i].duration > at_time:
+					return _caption_array[-i]
 			else:
-				if i+1 < _caption_array.size():
-					if _caption_array[i].delay <= at_time and min(_caption_array[i].delay + max_automatic_duration, _caption_array[i+1]) > at_time:
-						return _caption_array[i]
-				else:
-					if _caption_array[i].delay <= at_time and _caption_array[i].delay + max_automatic_duration >= at_time:
-						return _caption_array[i]
+				if _caption_array[-i].delay <= at_time and _caption_array[-i].delay + CaptionServer.max_linger_duration > at_time:
+					return _caption_array[-i]
 	return null
 
 
@@ -45,10 +41,10 @@ func get_queued_caption(at_time: float) -> Caption:
 				return caption
 	return null
 
-
+#FIXME: this might be inaccurate right now!
 ## Returns the delay from a given time to the next Caption. Will return -1 if no captions are left. Can return a negative delay if a caption is displaying at time and include_current is set.
 func get_delay(from_time: float, include_current: bool = false) -> float:
-	if (from_time > _caption_array[-1].delay and not include_current) or _caption_array[-1].delay + _caption_array[-1]._duration > from_time and include_current:
+	if (from_time > _caption_array[-1].delay and not include_current) or _caption_array[-1].delay + _caption_array[-1].duration > from_time and include_current:
 		return -1
 	var current_caption = get_displaying_caption(from_time)
 	if include_current and current_caption != null:

@@ -12,19 +12,23 @@ config_version=5
 
 closed_captions/global_cast_save_path="res://global_cast.res"
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="captions"
 run/main_scene="res://addons/closed_captions/caption_panel.tscn"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://addons/closed_captions/icon.svg"
 
 [autoload]
 
 CaptionSever="*res://addons/closed_captions/caption_server.gd"
-CaptionTheme="*res://addons/closed_captions/caption_theme.gd"
-CaptionServer="*res://addons/closed_captions/caption_server.gd"
-PluginReference="*res://addons/closed_captions/plugin_reference.gd"
+CaptionTheme="*uid://8wyawo4onb71"
+CaptionServer="*uid://cvdfkdjydukun"
+PluginReference="*uid://daim0n6vih4de"
 
 [editor_plugins]
 

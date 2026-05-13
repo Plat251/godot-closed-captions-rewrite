@@ -160,6 +160,7 @@ func set_pos(pos = Caption.Positions):
 		Caption.Positions.BEHIND:
 			_caption_position = Positions.BEHIND
 			_is_off_screen = true
+		
 
 ## Generating a bbcode string and putting it as the label text for the compact rendering option.
 func _set_compact_text():

@@ -12,7 +12,7 @@ func get_displaying_caption(at_time: float) -> Caption:
 	if caption.duration > 0:
 		return caption if at_time >= caption.delay and caption.delay + caption.duration else null
 	else:
-		return caption if at_time >= caption.delay and min(audio_stream.get_length(), caption.delay + max_automatic_duration) else null
+		return caption if at_time >= caption.delay and min(audio_stream.get_length(), caption.delay + CaptionServer.max_linger_duration) else null
 
 ## Returns the next Caption to be displayed after a given position. Will return null from a position that is equal to or larger to the highest delay.
 func get_queued_caption(at_time: float) -> Caption:
@@ -24,7 +24,7 @@ func get_delay(from_time: float, include_current: bool = false) -> float:
 		if caption.duration > 0:
 			return caption.delay - from_time if caption.delay + caption.duration > from_time else -1
 		else:
-			return caption.delay - from_time if min(audio_stream.get_length(), caption.delay + max_automatic_duration) > from_time else -1
+			return caption.delay - from_time if min(audio_stream.get_length(), caption.delay + CaptionServer.max_linger_duration) > from_time else -1
 	else:
 		return caption.delay - from_time if caption.delay > from_time else -1
 

@@ -26,7 +26,7 @@ var caption_stacks: Array[Array]
 @export var time_begin: float
 @export var time_end: float:
 	set(no):
-		assert(false)
+		pass
 	get():
 		return time_begin + (time_scale * 60)
 @export var time_cursor: float

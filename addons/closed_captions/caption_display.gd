@@ -6,12 +6,6 @@ var _display: VBoxContainer = VBoxContainer.new()
 
 var speakers: Array[Array] = [["", 0],["", 0],["", 0],["", 0]]
 
-## Shows the Captions being displayed. Keep in mind: those are the resources the CaptionLabels are being generated from, not the actual Labels.
-@export var displaying: Array[Caption] = []:
-	set(display):
-		displaying = display
-		_update_displayed_labels()
-var _displayed_captions: Array[CaptionLabel] = []
 ## Select the audio busses this Label is listening to.
 @export_flags_2d_physics var source_bus: int = 255
 
@@ -37,6 +31,11 @@ var _displayed_captions: Array[CaptionLabel] = []
 		for caption in _display.get_children():
 			caption.is_compact = small
 
+func _validate_property(property: Dictionary) -> void:
+	if property.name == "displaying":
+		property.usage |= PROPERTY_USAGE_READ_ONLY
+	
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray
 	# get_viewport_rect in editor mode returns the editor viewport, therefore we need this workaround:
@@ -58,21 +57,22 @@ func _exit_tree():
 	CaptionServer.signoff_display(self)
 
 ## Displays a caption for its duration.
-func display_caption(caption: Caption):
-	displaying.append(caption)
+func display_caption(caption: Caption, override_position: CaptionLabel.Positions = CaptionLabel.Positions.UNSET):
+	_display.add_child(CaptionLabel.new(caption, !_is_speaker_name_recent(caption), is_compact, override_position))
 	if caption.previous != null:
-		displaying.erase(caption.previous)
-	_update_displayed_labels()
+		pull_caption(caption.previous)
 	# Using a deferred call to return without a delay.
 	# Also using the internal duration of the caption, because this is where the auto generated length is stored.
-	pull_caption.call_deferred(caption, caption._duration)
+	pull_caption.call_deferred(caption, caption.duration if caption.duration > 0 else CaptionServer.max_linger_duration)
 
 ## Pulls a caption from the display, awaiting an optional display.
 func pull_caption(caption: Caption, delay:float = 0):
 	if delay > 0:
 		await get_tree().create_timer(delay).timeout
-	displaying.erase(caption)
-	_update_displayed_labels()
+	
+	for child: CaptionLabel in _display.get_children(true):
+		if child.caption == caption:
+			child.free()
 
 ## Checks if it is receiving Captions from a Bus by the bus name.
 func is_receiving_bus(bus: StringName):
@@ -105,17 +105,3 @@ func _find_caption_label_id(caption:Caption) -> int:
 	var cap: CaptionLabel = _find_caption_label(caption)
 	if cap == null: return -1
 	return _display.get_children().find(cap)
-
-## Rearranges children of _display to reflect the order of displaying
-func _update_displayed_labels():
-	var current_display: Array[Caption] = []
-	for label:CaptionLabel in _display.get_children(true):
-		current_display.append(label.caption)
-	for caption in displaying:
-		if not current_display.has(caption):
-			_display.add_child(CaptionLabel.new(caption, !_is_speaker_name_recent(caption), is_compact))
-	for caption in current_display:
-		if not displaying.has(caption):
-			_remove_caption(caption)
-	for i in range(displaying.size()):
-		_display.move_child(_find_caption_label(displaying[i]), i)
