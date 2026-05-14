@@ -1,0 +1,118 @@
+[gd_resource type="Resource" script_class="CaptionedAudioStream" format=3 uid="uid://xdb1g4l52xxx"]
+
+[ext_resource type="AudioStream" uid="uid://dtfdc5puc6acp" path="res://demo/Phasmophobia_No_Evidence.wav" id="1_um3ak"]
+[ext_resource type="Script" uid="uid://c8pu8ki7ildbs" path="res://addons/closed_captions_composite_architecture/caption.gd" id="2_mntht"]
+[ext_resource type="Script" uid="uid://dnwoot882gkeh" path="res://addons/closed_captions_composite_architecture/captioned_audiostream.gd" id="3_vu2i4"]
+
+[sub_resource type="Resource" id="Resource_wa64w"]
+script = ExtResource("2_mntht")
+text = "clicking"
+duration = 2.0
+
+[sub_resource type="Resource" id="Resource_5fdjd"]
+script = ExtResource("2_mntht")
+text = "Boy, do I love light switches."
+speaker_name = "Kyle"
+speaker_color = 1
+delay = 0.5
+
+[sub_resource type="Resource" id="Resource_lndpt"]
+script = ExtResource("2_mntht")
+text = "Love turning them on and off so much fun."
+speaker_name = "Kyle"
+speaker_color = 1
+delay = 2.0
+
+[sub_resource type="Resource" id="Resource_1g0h8"]
+script = ExtResource("2_mntht")
+text = "I love turning on lights"
+speaker_name = "Kyle"
+speaker_color = 1
+delay = 4.0
+
+[sub_resource type="Resource" id="Resource_4bnx5"]
+script = ExtResource("2_mntht")
+text = "next to my large collection of throwable objects"
+speaker_name = "Kyle"
+speaker_color = 1
+delay = 5.5
+
+[sub_resource type="Resource" id="Resource_npr8r"]
+script = ExtResource("2_mntht")
+text = "and also empty notebooks it would sure suck"
+speaker_name = "Kyle"
+speaker_color = 1
+delay = 8.4
+
+[sub_resource type="Resource" id="Resource_mo8ok"]
+script = ExtResource("2_mntht")
+text = "if someone named Carol Thomas showed up"
+speaker_name = "Kyle"
+speaker_color = 1
+delay = 11.8
+
+[sub_resource type="Resource" id="Resource_p1y83"]
+script = ExtResource("2_mntht")
+text = "to ruin all my fun."
+speaker_name = "Kyle"
+speaker_color = 1
+delay = 14.0
+
+[sub_resource type="Resource" id="Resource_pc5ud"]
+script = ExtResource("2_mntht")
+text = "Carol Thomas, Carol Thomas, Carol Thomas"
+speaker_name = "Kyle"
+speaker_color = 1
+delay = 15.0
+
+[sub_resource type="Resource" id="Resource_e75l0"]
+script = ExtResource("2_mntht")
+text = "clicking stops"
+delay = 17.2
+
+[sub_resource type="Resource" id="Resource_8cm81"]
+script = ExtResource("2_mntht")
+text = "Hey, I've been here for half an hour"
+speaker_name = "Kyle"
+speaker_color = 1
+extra_formatting = "into radio"
+delay = 18.5
+
+[sub_resource type="Resource" id="Resource_1bclt"]
+script = ExtResource("2_mntht")
+text = "can we please just call this a shade and go home?"
+speaker_name = "Kyle"
+speaker_color = 1
+delay = 20.3
+
+[sub_resource type="Resource" id="Resource_qyomo"]
+script = ExtResource("2_mntht")
+text = "We need at least one piece of evidence."
+speaker_name = "Jefferey"
+speaker_color = 2
+speaker_format = 1
+extra_formatting = "over the radio"
+delay = 21.87
+
+[sub_resource type="Resource" id="Resource_mepef"]
+script = ExtResource("2_mntht")
+text = "Do we, tho? I feel like this evidence is pretty conclusive."
+speaker_name = "Kyle"
+speaker_color = 1
+delay = 23.8
+
+[sub_resource type="Resource" id="Resource_v6ia2"]
+script = ExtResource("2_mntht")
+text = "Let's go trough the cheklist."
+speaker_name = "Jefferey"
+speaker_color = 2
+speaker_format = 1
+extra_formatting = "over the radio"
+delay = 26.5
+duration = 2.0
+
+[resource]
+script = ExtResource("3_vu2i4")
+audio_stream = ExtResource("1_um3ak")
+captions = Array[ExtResource("2_mntht")]([SubResource("Resource_wa64w"), SubResource("Resource_5fdjd"), SubResource("Resource_lndpt"), SubResource("Resource_1g0h8"), SubResource("Resource_4bnx5"), SubResource("Resource_npr8r"), SubResource("Resource_mo8ok"), SubResource("Resource_p1y83"), SubResource("Resource_pc5ud"), SubResource("Resource_e75l0"), SubResource("Resource_8cm81"), SubResource("Resource_1bclt"), SubResource("Resource_qyomo"), SubResource("Resource_mepef"), SubResource("Resource_v6ia2")])
+metadata/_custom_type_script = "uid://dnwoot882gkeh"

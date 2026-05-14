@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://jxpoqghgi78l"]
+
+[ext_resource type="Theme" uid="uid://dg5xg7e6qqlgq" path="res://addons/closed_captions_composite_architecture/captions.theme" id="1_d6po2"]
+[ext_resource type="Script" uid="uid://cxamqmhqmbm5s" path="res://addons/closed_captions_composite_architecture/caption_player.gd" id="1_ytiva"]
+[ext_resource type="Texture2D" uid="uid://luj748wbdr6d" path="res://addons/closed_captions_composite_architecture/icons/CaptionedAudioStreamPlayer.svg" id="3_j5lb4"]
+
+[sub_resource type="GDScript" id="GDScript_j5lb4"]
+script/source = "extends Node
+
+
+func _ready():
+	await get_tree().create_timer(1.0).timeout
+	$\"../CaptionPlayer\".captioned_audio_stream = load(\"res://demo/Phasmophobia_No_Evidence_Captioned.tres\")
+	$\"../CaptionPlayer\".play()
+"
+
+[sub_resource type="GDScript" id="GDScript_onu7k"]
+script/source = "extends Node3D
+
+
+func _process(delta):
+	self.rotation.y += delta
+"
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d6po2"]
+
+[node name="Demo" type="Node3D" unique_id=755695671]
+
+[node name="DebugCaptionPlayerStarter" type="Node" parent="." unique_id=767889973]
+script = SubResource("GDScript_j5lb4")
+
+[node name="CaptionPlayer" type="Node" parent="." unique_id=1425376051 node_paths=PackedStringArray("audio_stream_player", "caption_label")]
+script = ExtResource("1_ytiva")
+audio_stream_player = NodePath("../AudioStreamPlayer3D")
+caption_label = NodePath("../CanvasLayer/CaptionContainer/CaptionRichTextLabel")
+metadata/_custom_type_script = "uid://cxamqmhqmbm5s"
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=526566007]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.99999994)
+
+[node name="Node3D" type="Node3D" parent="." unique_id=928443014]
+script = SubResource("GDScript_onu7k")
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Node3D" unique_id=243381143]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.8)
+remote_path = NodePath("../../AudioStreamPlayer3D")
+update_rotation = false
+update_scale = false
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=2002911258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.8)
+volume_db = -20.0
+
+[node name="Sprite3D" type="Sprite3D" parent="AudioStreamPlayer3D" unique_id=1347288328]
+pixel_size = 0.000625
+texture_filter = 0
+texture = ExtResource("3_j5lb4")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1336745694]
+
+[node name="CaptionContainer" type="PanelContainer" parent="CanvasLayer" unique_id=762099570]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -128.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_d6po2")
+
+[node name="CaptionRichTextLabel" type="RichTextLabel" parent="CanvasLayer/CaptionContainer" unique_id=16097743]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme = ExtResource("1_d6po2")
+fit_content = true
+scroll_active = false
+autowrap_mode = 0

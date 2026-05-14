@@ -18,18 +18,11 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="captions"
-run/main_scene="res://addons/closed_captions/caption_panel.tscn"
+config/name="captions-rewrite"
+run/main_scene="uid://jxpoqghgi78l"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://addons/closed_captions/icon.svg"
-
-[autoload]
-
-CaptionSever="*res://addons/closed_captions/caption_server.gd"
-CaptionTheme="*uid://8wyawo4onb71"
-CaptionServer="*uid://cvdfkdjydukun"
-PluginReference="*uid://daim0n6vih4de"
+config/icon="uid://c7ehcsavx5u2t"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/closed_captions/plugin.cfg")
+enabled=PackedStringArray()

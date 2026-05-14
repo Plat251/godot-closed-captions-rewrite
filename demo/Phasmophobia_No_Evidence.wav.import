@@ -2,7 +2,7 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://ch6dxwlabitpf"
+uid="uid://dtfdc5puc6acp"
 path="res://.godot/imported/Phasmophobia_No_Evidence.wav-8720d95052ed17913d02d8152f2f5dfa.sample"
 
 [deps]
@@ -21,4 +21,4 @@ edit/normalize=false
 edit/loop_mode=0
 edit/loop_begin=0
 edit/loop_end=-1
-compress/mode=0
+compress/mode=2

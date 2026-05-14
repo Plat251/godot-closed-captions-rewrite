@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://cmjt7162wd11m"]
+
+[ext_resource type="Script" uid="uid://cxamqmhqmbm5s" path="res://addons/closed_captions_composite_architecture/caption_player.gd" id="1_ij4c2"]
+[ext_resource type="Theme" uid="uid://dg5xg7e6qqlgq" path="res://addons/closed_captions_composite_architecture/captions.theme" id="3_3prcb"]
+[ext_resource type="Texture2D" uid="uid://luj748wbdr6d" path="res://addons/closed_captions_composite_architecture/icons/CaptionedAudioStreamPlayer.svg" id="4_khhea"]
+
+[sub_resource type="GDScript" id="GDScript_j5lb4"]
+script/source = "extends Node
+
+
+func _ready():
+	await get_tree().create_timer(1.0).timeout
+	$\"../CaptionPlayer\".captioned_audio_stream = load(\"res://demo/Phasmophobia_No_Evidence_Captioned.tres\")
+	$\"../CaptionPlayer\".play()
+"
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d6po2"]
+
+[node name="Demo" type="Node2D" unique_id=488339491]
+
+[node name="DebugCaptionPlayerStarter" type="Node" parent="." unique_id=767889973]
+script = SubResource("GDScript_j5lb4")
+
+[node name="CaptionPlayer" type="Node" parent="." unique_id=1425376051 node_paths=PackedStringArray("audio_stream_player", "caption_label")]
+script = ExtResource("1_ij4c2")
+audio_stream_player = NodePath("../AudioStreamPlayer2D")
+caption_label = NodePath("../CanvasLayer/CaptionContainer/CaptionRichTextLabel")
+metadata/_custom_type_script = "uid://cxamqmhqmbm5s"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=836869463]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=427731405]
+volume_db = -20.0
+
+[node name="Sprite2D" type="Sprite2D" parent="AudioStreamPlayer2D" unique_id=490540975]
+texture = ExtResource("4_khhea")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=95304132]
+
+[node name="CaptionContainer" type="PanelContainer" parent="CanvasLayer" unique_id=762099570]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -128.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_d6po2")
+
+[node name="CaptionRichTextLabel" type="RichTextLabel" parent="CanvasLayer/CaptionContainer" unique_id=16097743]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme = ExtResource("3_3prcb")
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
