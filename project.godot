@@ -22,7 +22,3 @@ config/name="captions-rewrite"
 run/main_scene="uid://jxpoqghgi78l"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="uid://c7ehcsavx5u2t"
-
-[editor_plugins]
-
-enabled=PackedStringArray()
